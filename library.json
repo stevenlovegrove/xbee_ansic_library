@@ -1,0 +1,37 @@
+{
+    "name": "xbee_ansic_library",
+    "version": "1.0.0",
+    "description": "Fork of xbee_ansic_library for arduino environment",
+    "keywords": "zigbee, xbee",
+    "repository":
+    {
+      "type": "git",
+      "url": "https://github.com/stevenlovegrove/xbee_ansic_library.git"
+    },
+    "authors":
+    [
+      {
+        "name": "Steven Lovegrove",
+        "email": "stevenlovegrove@gmail.com",
+        "url": ""
+      }
+    ],
+    "license": "MIT",
+    "homepage": "https://github.com/digidotcom/xbee_ansic_library",
+    "dependencies": {
+    },
+    "frameworks": "*",
+    "platforms": "*",
+    "build": {
+        "srcDir": ".",
+        "srcFilter":[
+            "+<src/*>", "-<src/mbedtls>",
+            "-<src/xbee/xbee_ipv4.c>",
+            "-<src/xbee/xbee_sms.c>",
+            "-<src/xbee/xbee_socket.c>",
+            "-<src/xbee/xbee_tx_status.c>",
+            "-<src/xbee/xbee_wifi.c>",
+            "+<ports/arduino/*>"
+        ]
+    }
+  }
