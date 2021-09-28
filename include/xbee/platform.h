@@ -42,7 +42,10 @@
    #define XBEE_END_DECLS
 #endif
 
-#include <errno.h>
+// ATMEL errno.h seems broken. Defines below are sufficient
+#ifndef __AVR__ 
+#  include <errno.h> 
+#endif
 #include <stddef.h>
 
 /**
@@ -359,6 +362,8 @@
    #include "../ports/win32/platform_config.h"
 #elif defined __MWERKS__ && defined __HC08__
    #include "../ports/hcs08/platform_config.h"
+#elif defined ARDUINO
+   #include "../ports/arduino/platform_config.h"
 #else
    #error "Unknown target"
 #endif
