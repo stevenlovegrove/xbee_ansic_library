@@ -6,6 +6,7 @@
 
 #ifndef __XBEE_PLATFORM_ARDUINO
 #define __XBEE_PLATFORM_ARDUINO
+
     #ifndef LITTLE_ENDIAN
     #  define LITTLE_ENDIAN 1234
     #endif
@@ -36,18 +37,23 @@
     // inttypes.h for PRIx16, PRIx32, etc. macros
     #include <inttypes.h>
 
-    // #define XBEE_WIFI_ENABLED 0
-    // #define XBEE_CELLULAR_ENABLED 0
+    #ifdef __cplusplus
+        // forward declaration
+        namespace arduino{ class Stream; }
+    #endif
 
-// Elements needed to keep track of serial port settings.  Must have a
-// baudrate member, other fields are platform-specific.
-typedef struct xbee_serial_t {
-    uint32_t baudrate;
-} xbee_serial_t;
+    typedef struct xbee_serial_t {
+        uint32_t baudrate;
+#ifdef __cplusplus
+        arduino::Stream* device;
+#else
+        void* device;
+#endif
+    } xbee_serial_t;
 
-// Unix epoch is 1/1/1970
-#define ZCL_TIME_EPOCH_DELTA    ZCL_TIME_EPOCH_DELTA_1970
+    // Unix epoch is 1/1/1970
+    #define ZCL_TIME_EPOCH_DELTA    ZCL_TIME_EPOCH_DELTA_1970
 
-#define XBEE_MS_TIMER_RESOLUTION 10
+    #define XBEE_MS_TIMER_RESOLUTION 10
 
 #endif      // __XBEE_PLATFORM_ARDUINO

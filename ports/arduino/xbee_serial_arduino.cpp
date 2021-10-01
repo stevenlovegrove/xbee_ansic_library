@@ -41,10 +41,9 @@
 #define XBEE_SER_CHECK(ptr) \
     do { if (xbee_ser_invalid(ptr)) return -EINVAL; } while (0)
 
-
 int xbee_ser_invalid( xbee_serial_t *serial)
 {
-    if (serial)
+    if (serial && serial->device)
     {
         return 0;
     }
@@ -54,12 +53,12 @@ int xbee_ser_invalid( xbee_serial_t *serial)
 
 const char *xbee_ser_portname( xbee_serial_t *serial)
 {
-    if (serial == NULL)
+    if (xbee_ser_invalid(serial))
     {
-        return "(invalid)";
+        return "#invalid";
+    }else{
+        return "Arduino";
     }
-
-    return "ArduinoStream";
 }
 
 
@@ -73,7 +72,7 @@ int xbee_ser_write( xbee_serial_t *serial, const void FAR *buffer,
         return -EINVAL;
     }
 
-    return Serial.write((const uint8_t*)buffer, length);
+    return serial->device->write((const uint8_t*)buffer, length);
 }
 
 
@@ -92,7 +91,7 @@ int xbee_ser_read( xbee_serial_t *serial, void FAR *buffer, int bufsize)
         return -EINVAL;
     }
 
-    result = Serial.readBytes((uint8_t*)buffer, bufsize);
+    result = serial->device->readBytes((uint8_t*)buffer, bufsize);
 
     #ifdef XBEE_SERIAL_VERBOSE
         printf( "%s: read %d bytes\n", __FUNCTION__, result);
@@ -141,7 +140,7 @@ int xbee_ser_getchar( xbee_serial_t *serial)
 int xbee_ser_tx_free( xbee_serial_t *serial)
 {
     XBEE_SER_CHECK( serial);
-    return Serial.availableForWrite();
+    return serial->device->availableForWrite();
 }
 
 
@@ -155,7 +154,7 @@ int xbee_ser_tx_used( xbee_serial_t *serial)
 int xbee_ser_tx_flush( xbee_serial_t *serial)
 {
     XBEE_SER_CHECK( serial);
-    Serial.flush();
+    serial->device->flush();
     return 0;
 }
 
@@ -170,7 +169,7 @@ int xbee_ser_rx_free( xbee_serial_t *serial)
 int xbee_ser_rx_used( xbee_serial_t *serial)
 {
     XBEE_SER_CHECK( serial);
-    return Serial.available();
+    return serial->device->available();
 }
 
 
@@ -199,9 +198,7 @@ int xbee_ser_open( xbee_serial_t *serial, uint32_t baudrate)
         #endif
         return -EINVAL;
     }
-
-    Serial.begin(baudrate);
-
+    // Do nothing. Assume user is opening this thing...
     return 0;
 }
 
@@ -209,7 +206,7 @@ int xbee_ser_open( xbee_serial_t *serial, uint32_t baudrate)
 int xbee_ser_close( xbee_serial_t *serial)
 {
     XBEE_SER_CHECK( serial);
-    Serial.end();
+    // Do nothing. Assume user is closing
     return 0;
 }
 
