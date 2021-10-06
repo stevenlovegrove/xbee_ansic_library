@@ -14,6 +14,8 @@
     #  define BYTE_ORDER LITTLE_ENDIAN
     #endif
 
+    #define XBEE_DEV_MAX_DISPATCH_PER_TICK 1
+    #define XBEE_CMD_REQUEST_TABLESIZE 4
 
     #define strcmpi         strcasecmp
     #define strncmpi        strncasecmp
