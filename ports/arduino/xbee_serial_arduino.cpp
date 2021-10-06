@@ -29,7 +29,7 @@
 // NOTE: Documentation for these functions can be found in xbee/serial.h.
 
 #include <limits.h>
-#include <errno.h>
+// #include <errno.h>
 #include <fcntl.h>
 #include <stdio.h>
 #include <unistd.h>

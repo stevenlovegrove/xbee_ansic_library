@@ -18,7 +18,7 @@
 */
 
 /*** BeginHeader */
-#include <errno.h>
+// #include <errno.h>
 #include <stddef.h>
 #include <stdio.h>
 
